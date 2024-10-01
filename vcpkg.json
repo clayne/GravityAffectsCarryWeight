@@ -1,6 +1,6 @@
 {
   "name": "gravity-affects-carryweight",
-  "version-string": "1.1.1",
+  "version-string": "1.1.3",
   "description": "",
   "homepage": "",
   "license": "MIT",
@@ -10,5 +10,6 @@
     "rsm-binary-io",
     "spdlog",
     "xbyak"
-  ]
+  ],
+  "builtin-baseline": "76d153790caf0592fce8fc4484aa6db18c7d00d4"
 }
