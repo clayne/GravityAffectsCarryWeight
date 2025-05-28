@@ -42,7 +42,7 @@ namespace Handler
 			return func(a_this, a_invItem, a_weight, a_shouldModifyWholeStackOut);
 		}
 		static inline REL::Relocation<decltype(thunk)> func;
-		static inline std::size_t                      idx = 0x99;
+		static inline std::size_t                      idx{ 0x99 };
 	};
 
 	void Install()
@@ -51,9 +51,9 @@ namespace Handler
 		settings->LoadSettings();
 
 		if (settings->adjustItemWeights) {
-			stl::write_vfunc<AdjustItemWeight>(RE::VTABLE::PlayerCharacter[38]);
+			stl::write_vfunc<AdjustItemWeight>(RE::VTABLE::PlayerCharacter[13]);
 		} else {
-			REL::Relocation<std::uintptr_t> target{ REL::ID(1721804) };
+			REL::Relocation<std::uintptr_t> target{ REL::ID(100785) }; // DONE
 			stl::asm_replace<GetMaxCarryWeight>(target.address());
 		}
 	}
@@ -70,27 +70,24 @@ void MessageCallback(SFSE::MessagingInterface::Message* a_msg) noexcept
 	}
 }
 
-DLLEXPORT constinit auto SFSEPlugin_Version = []() noexcept {
+SFSE_EXPORT constinit auto SFSEPlugin_Version = []() noexcept {
 	SFSE::PluginVersionData data{};
 
 	data.PluginVersion(Version::MAJOR);
 	data.PluginName(Version::PROJECT);
 	data.AuthorName("powerofthree");
+	data.UsesSigScanning(false);
 	data.UsesAddressLibrary(true);
+	data.HasNoStructUse(false);
 	data.IsLayoutDependent(true);
 	data.CompatibleVersions({ SFSE::RUNTIME_LATEST });
 
 	return data;
 }();
 
-DLLEXPORT bool SFSEAPI SFSEPlugin_Load(const SFSE::LoadInterface* a_sfse)
+SFSEPluginLoad(const SFSE::LoadInterface* a_sfse)
 {
-	SFSE::Init(a_sfse);
-
-	logger::info("Game version : {}", a_sfse->RuntimeVersion());
-	logger::info("Plugin version : {}", Version::NAME);
-
+	SFSE::Init(a_sfse, { .trampoline = false });
 	SFSE::GetMessagingInterface()->RegisterListener(MessageCallback);
-
 	return true;
 }

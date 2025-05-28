@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 set(NAME "po3_GravityAffectsCarryWeight" CACHE STRING "")
-set(VERSION 1.1.3 CACHE STRING "")
+set(VERSION 2.0.0 CACHE STRING "")
 
 # ---- Options ----
 
@@ -96,6 +96,7 @@ find_path(CLIB_UTIL_INCLUDE_DIRS "ClibUtil/bitmasks.hpp")
 
 set(headers
 	src/PCH.h
+	src/Settings.h
 )
 
 set(sources
